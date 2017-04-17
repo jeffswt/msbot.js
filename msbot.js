@@ -68,6 +68,12 @@ var msbot = {
             flag : function(x, y) {
                 return msbot.cell.get(x, y) > 11;
             }
+        },
+        flag : function(x, y) {
+            return msbot.entry.placeFlag(x, y);
+        },
+        reveal : function(x, y) {
+            return msbot.entry.revealCell(x, y);
         }
     }
 };
