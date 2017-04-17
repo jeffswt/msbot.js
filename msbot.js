@@ -8,5 +8,25 @@ var Queue2D = function() {
                 return true;
         return false;
     }
+    this.push = function(x, y) {
+        if (this.includes(x, y))
+            return ;
+        this.arr_x.push(x);
+        this.arr_y.push(y);
+        this.length += 1;
+        return ;
+    };
+    this.pop = function(x, y) {
+        if (this.length <= 0)
+            return [undefined, undefined];
+        var a = this.arr_x,
+            b = this.arr_y;
+        var c = a.splice(1),
+            d = b.splice(1);
+        this.arr_x = c;
+        this.arr_y = d;
+        this.length -= 1;
+        return [a[0], b[0]];
+    };
     return this;
 };
