@@ -243,3 +243,13 @@ var msbot = {
         return ;
     }
 };
+
+if (document.domain !== 'minesweeper.io')
+    throw alert('Please run this script in "minesweeper.io".');
+if (msbot_loaded)
+    throw alert('"msbot.js" should only be loaded once.');
+var msbot_loaded = true;
+alert('Congratulations!\n You\'ve made minesweeper great again.');
+console.clear();
+msbot.inject();
+msbot.interface.reboot();
