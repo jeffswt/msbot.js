@@ -28,5 +28,13 @@ var Queue2D = function() {
         this.length -= 1;
         return [a[0], b[0]];
     };
+    this.empty = function() {
+        return this.length <= 0;
+    };
     return this;
+};
+
+
+var msbot = {
+    entry : appController.minesweeper,
 };
