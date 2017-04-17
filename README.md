@@ -22,7 +22,7 @@ There are, however, a few methods of installation which we may go through with y
 
 ### Bookmarklet
 
-1.  Drag this code to your bookmarks bar (and rename it): `javascript:eval('function f(){i=document.createElement(\'script\');i.src=\'//jeffswt.tk/meta/msbot.js\';document.body.append(i);}f();')`
+1.  Drag this code to your bookmarks bar (and rename it): `javascript:eval('function f(){i=document.createElement(\'script\');i.src=\'//jeffswt.tk/meta/msbot.js\';document.body.appendChild(i);}f();')`
 2.  Click the link on the bookmarks bar when in [minesweeper.io](https://minesweeper.io/).
 3.  Your instance of Minesweeper should be automated by now.
 
@@ -46,4 +46,3 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ```
-
