@@ -117,11 +117,6 @@ var msbot = {
         }
     },
     ai : {
-        queue : {
-            flag : Queue2D(),
-            reveal : Queue2D(),
-        },
-        heap_size : 8,
         check_cell : function(x, y) {
             var val_est = msbot.cell.get(x, y);
             if (!(val_est >= 1 && val_est <= 8)) // avoid undef and etc
