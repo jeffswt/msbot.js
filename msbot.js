@@ -37,4 +37,14 @@ var Queue2D = function() {
 
 var msbot = {
     entry : appController.minesweeper,
+    cell : {
+        // 0: bomb, 10: covered;
+        // 1~8: numbers, 9: empty space;
+        get : function(x, y) {
+            var ret = parseInt(msbot.entry.playGrid.get(x, y));
+            if (isNaN(ret))
+                return 11;
+            return ret;
+        }
+    }
 };
