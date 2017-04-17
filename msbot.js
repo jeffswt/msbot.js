@@ -174,5 +174,57 @@ var msbot = {
             msbot.cell.flag(nx, ny);
             return true;
         }
+    },
+    interface : {
+        powered_on : false,
+        delay : 200,
+        io : {
+            flag : function(x, y) {
+                console.log('Flagged cell (' + x + ', ' + y + ').');
+                return ;
+            },
+            reveal : function(x, y) {
+                console.log('Revealed cell (' + x + ', ' + y + ').');
+                return ;
+            }
+        },
+        resume_game : function() {
+            $('#btnStart').click();
+            return ;
+        },
+        thread : function() {
+            if (!msbot.interface.powered_on)
+                return ;
+            if (!msbot.ai.scan_map_flag())
+                msbot.interface.power_off();
+            setTimeout(msbot.interface.thread, msbot.interface.delay);
+            return ;
+        },
+        power_on : function() {
+            if (msbot.interface.powered_on)
+                return ;
+            msbot.entry = appController.minesweeper;
+            msbot.interface.powered_on = true;
+            console.log('msbot.js: Powered on.');
+            msbot.interface.thread();
+            return ;
+        },
+        power_off : function() {
+            if (!msbot.interface.powered_on)
+                return ;
+            msbot.interface.powered_on = false;
+            console.log('msbot.js: Powered off.');
+            return ;
+        },
+        reboot : function() {
+            setTimeout(function() {
+                msbot.interface.power_off();
+                setTimeout(function() {
+                    msbot.interface.power_on();
+                    return ;
+                }, 200);
+            }, 1000);
+            return ;
+        }
     }
 };
