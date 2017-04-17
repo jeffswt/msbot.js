@@ -98,5 +98,81 @@ var msbot = {
                 return msbot.cell.adjacent.check_counter(x, y, msbot.cell.is.covered);
             }
         }
+    },
+    ai : {
+        queue : {
+            flag : Queue2D(),
+            reveal : Queue2D(),
+        },
+        heap_size : 8,
+        check_cell : function(x, y) {
+            var val_est = msbot.cell.get(x, y);
+            if (!(val_est >= 1 && val_est <= 8)) // avoid undef and etc
+                return false;
+            var val_mne = msbot.cell.adjacent.mines(x, y),
+                val_flg = msbot.cell.adjacent.flags(x, y),
+                val_uns = msbot.cell.adjacent.covered(x, y);
+            if (val_est == val_mne + val_flg + val_uns&& val_uns > 0) {
+                // All the covered ones can be flagged
+                for (var i = 0; i < 8; i++) {
+                    var nx = x + msbot.cell.adjacent.move_x[i],
+                        ny = y + msbot.cell.adjacent.move_y[i];
+                    if (msbot.cell.is.covered(nx, ny)) {
+                        msbot.interface.io.flag(nx, ny);
+                        msbot.cell.flag(nx, ny);
+                        return true;
+                    }
+                }
+            } if (val_est == val_mne + val_flg && val_uns > 0) {
+                // All the rest can be revealed
+                for (var i = 0; i < 8; i++) {
+                    var nx = x + msbot.cell.adjacent.move_x[i],
+                        ny = y + msbot.cell.adjacent.move_y[i];
+                    if (msbot.cell.is.covered(nx, ny)) {
+                        msbot.interface.io.reveal(nx, ny);
+                        msbot.cell.reveal(nx, ny);
+                        return true;
+                    }
+                }
+            }
+            // Nothing to do.
+            return false;
+        },
+        scan_fail_count : 0,
+        scan_map_flag : function(x, y) {
+            // <del>Selecting random cells to check</del>
+            // Seems that randomizing is not a good idea.
+            // Then we are flooding the map with random cells
+            for (var i = 2; i <= 63; i++)
+                for (var j = 2; j <= 63; j++)
+                    if (msbot.ai.check_cell(i, j)) {
+                        msbot.ai.scan_fail_count = 0;
+                        return true;
+                    }
+            // Randomly scan and flag
+            msbot.ai.scan_fail_count += 1;
+            // If it does not reach an extent, skip this procedure
+            if (msbot.ai.scan_fail_count < 30)
+                return true;
+            if (!msbot.ai.scan_random_flag())
+                return false;
+            // Done working
+            msbot.ai.scan_fail_count = 0;
+            return true;
+        },
+        scan_random_flag : function() {
+            var val = 0, nx = 0, ny = 0;
+            var fail_cnt = 0;
+            while (val != 10 && fail_cnt <= 256) {
+                [nx, ny] = msbot.cell.random();
+                val = msbot.cell.get(nx, ny);
+                fail_cnt += 1;
+            }
+            if (fail_cnt > 256)
+                return false;
+            msbot.interface.io.flag(nx, ny);
+            msbot.cell.flag(nx, ny);
+            return true;
+        }
     }
 };
