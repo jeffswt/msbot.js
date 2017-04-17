@@ -45,6 +45,29 @@ var msbot = {
             if (isNaN(ret))
                 return 11;
             return ret;
+        },
+        random : function() {
+            var x = parseInt(Math.random() * 62 + 2),
+                y = parseInt(Math.random() * 62 + 2);
+            return [x, y];
+        },
+        is : {
+            mine : function(x, y) {
+                return msbot.cell.get(x, y) == 0;
+            },
+            number : function(x, y) {
+                var tmp = msbot.cell.get(x, y);
+                return tmp >= 1 && tmp <= 8;
+            },
+            empty : function(x, y) {
+                return msbot.cell.get(x, y) == 9;
+            },
+            covered : function(x, y) {
+                return msbot.cell.get(x, y) == 10;
+            },
+            flag : function(x, y) {
+                return msbot.cell.get(x, y) > 11;
+            }
         }
     }
 };
