@@ -226,5 +226,20 @@ var msbot = {
             }, 1000);
             return ;
         }
+    },
+    inject : function() {
+        appController.game.state.onResumedCallback = function() {
+            msbot.interface.reboot();
+            return ;
+        };
+        appController.game.state.onPausedCallback = function() {
+            msbot.interface.power_off();
+            return ;
+        };
+        eval(('MinesweeperUI=' + MinesweeperUI)
+            .replace('console.log("onGamePause")', 'msbot.interface.power_off()')
+            .replace('console.log("onGameResume")', 'msbot.interface.reboot()')
+        );
+        return ;
     }
 };
