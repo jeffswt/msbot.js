@@ -74,6 +74,29 @@ var msbot = {
         },
         reveal : function(x, y) {
             return msbot.entry.revealCell(x, y);
+        },
+        adjacent : {
+            move_x : [ 1, 1, 0, -1, -1, -1, 0, 1 ],
+            move_y : [ 0, -1, -1, -1, 0, 1, 1, 1 ],
+            check_counter : function(x, y, func) {
+                var res = 0;
+                for (var i = 0; i < 8; i++) {
+                    var nx = x + msbot.cell.adjacent.move_x[i],
+                        ny = y + msbot.cell.adjacent.move_y[i];
+                    if (func(nx, ny))
+                        res += 1;
+                }
+                return res;
+            },
+            mines : function(x, y) {
+                return msbot.cell.adjacent.check_counter(x, y, msbot.cell.is.mine);
+            },
+            flags : function(x, y) {
+                return msbot.cell.adjacent.check_counter(x, y, msbot.cell.is.flag);
+            },
+            covered : function(x, y) {
+                return msbot.cell.adjacent.check_counter(x, y, msbot.cell.is.covered);
+            }
         }
     }
 };
