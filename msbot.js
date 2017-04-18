@@ -228,6 +228,13 @@ var msbot = {
             console.log('msbot.js: Powered off.');
             return ;
         },
+        toggle : function() {
+            if (msbot.interface.powered_on)
+                msbot.interface.power_off();
+            else
+                msbot.interface.power_on();
+            return ;
+        },
         reboot : function() {
             setTimeout(function() {
                 msbot.interface.power_off();
@@ -252,6 +259,15 @@ var msbot = {
             .replace('console.log("onGamePause")', 'msbot.interface.power_off()')
             .replace('console.log("onGameResume")', 'msbot.interface.reboot()')
         );
+        // Now adding keyboard actions
+        var old_keydown = window.onkeydown;
+        window.onkeydown = function(a) {
+            if (a.keyCode == 220) { // backslash
+                msbot.interface.toggle();
+                return ;
+            }
+            return old_keydown(a);
+        };
         return ;
     }
 };
